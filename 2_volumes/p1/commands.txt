@@ -1,0 +1,52 @@
+kubectl create deployment first-app-b --image=09ea9998eaf2
+kubectl get deployment
+kubectl get pods
+kubectl delete  deployment first-app-b 
+
+docker tag kub-first-app-b yosafefesahaoqbamecail/kub-first-app-b
+docker push yosafefesahaoqbamecail/kub-first-app-b
+kubectl create deployment first-app-b --image=yosafefesahaoqbamecail/kub-first-app-b
+
+kubectl expose deployment first-app-b --port 8080
+kubectl expose deployment first-app-b  --type=ClusterIP  --port 8080
+kubectl expose deployment first-app-b  --type=NodePort  --port 8080
+kubectl expose deployment first-app-b  --type=LoadBalancer  --port 8080
+kubectl get services
+kubectl delete service first-app-b
+
+minikube  service first-app-b
+
+kubectl scale deployment/first-app-b --replicas 3
+
+docker build -t yosafefesahaoqbamecail/kub-first-app-b:2 .
+docker push yosafefesahaoqbamecail/kub-first-app-b:2
+kubectl set image deployment/first-app-b kub-first-app-b=yosafefesahaoqbamecail/kub-first-app-b:2
+
+kubectl rollout status deployment/first-app-b
+kubectl set image deployment/first-app-b kub-first-app-b=yosafefesahaoqbamecail/kub-first-app-b:2
+kubectl rollout undo deployment/first-app-b
+kubectl rollout history deployment/first-app-b 
+kubectl rollout history deployment/first-app-b --revision=0
+kubectl rollout undo deployment/first-app-b --to-revision=1
+
+
+
+
+# declarative
+kubectl apply -f=deployment.yaml,service.yaml
+
+kubectl delete -f=deployment.yaml,service.yaml
+
+
+docker build -t yosafefesahaoqbamecail/kub-data-demo-b:2 .
+docker push yosafefesahaoqbamecail/kub-data-demo-b:2
+kubectl apply -f=deployment.yaml,service.yaml
+
+kubectl apply -f=host-pv.yaml,host-pvc.yaml,deployment.yaml,service.yaml
+kubectl delete -f=host-pv.yaml,host-pvc.yaml,deployment.yaml,service.yaml
+kubectl get deployment
+kubectl get pods
+
+
+kubectl apply -f=host-pv.yaml,host-pvc.yaml,environment.yaml,deployment.yaml,service.yaml
+kubectl delete -f=host-pv.yaml,host-pvc.yaml,environment.yaml,deployment.yaml,service.yaml
